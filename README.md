@@ -89,6 +89,10 @@ ffmpeg -framerate 30 -i output/modern/frame_%08d.png \
 | `--preview-all` | — | Preview frames for all styles |
 | `--list-styles` | — | List styles and exit |
 
+## Contact
+
+Questions, suggestions, or contributions? Reach out at **jetervaz@gmail.com**
+
 ## License
 
-MIT
+MIT - see [LICENSE](LICENSE)
