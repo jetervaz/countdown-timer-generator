@@ -4,18 +4,45 @@ Generate countdown timer video frames (24:00:00 → 00:00:00) in **10 different 
 
 ## Styles
 
-| Style | Description |
-|-------|-------------|
-| **modern** | Clean dark background with cyan text and progress bar |
-| **classic** | Traditional white on black with border |
-| **neon** | Neon glow effect on dark purple background |
-| **minimal** | Clean white background with thin gray text |
-| **retro** | Amber LED display look with glow |
-| **gradient** | Vibrant purple gradient background with white text |
-| **terminal** | Green-on-black hacker terminal style |
-| **cinematic** | Gold text on dark gradient with glow |
-| **sport** | Bold red digits with progress bar |
-| **elegant** | Cream background with brown text and circle progress |
+### Modern
+Clean dark background with cyan text and progress bar
+![Modern](previews/preview_modern.png)
+
+### Classic
+Traditional white on black with border
+![Classic](previews/preview_classic.png)
+
+### Neon
+Neon glow effect on dark purple background
+![Neon](previews/preview_neon.png)
+
+### Minimal
+Clean white background with thin gray text
+![Minimal](previews/preview_minimal.png)
+
+### Retro
+Amber LED display look with glow
+![Retro](previews/preview_retro.png)
+
+### Gradient
+Vibrant purple gradient background with white text
+![Gradient](previews/preview_gradient.png)
+
+### Terminal
+Green-on-black hacker terminal style
+![Terminal](previews/preview_terminal.png)
+
+### Cinematic
+Gold text on dark gradient with glow
+![Cinematic](previews/preview_cinematic.png)
+
+### Sport
+Bold red digits with progress bar
+![Sport](previews/preview_sport.png)
+
+### Elegant
+Cream background with brown text and circle progress
+![Elegant](previews/preview_elegant.png)
 
 ## Installation
 
