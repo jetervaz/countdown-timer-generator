@@ -3,8 +3,8 @@
 Countdown Timer Video Frame Generator
 
 Generates video frames for a 24-hour countdown timer (24:00:00 → 00:00:00)
-in 10 different visual styles. Frames are saved as PNG images and can be
-assembled into a video using ffmpeg.
+in 20 different visual styles (10 digital + 10 circle/pie). Frames are saved
+as PNG images and can be assembled into a video using ffmpeg.
 
 Usage:
     python generate_countdown.py --style modern --fps 30
@@ -261,12 +261,276 @@ STYLES: dict[str, StyleConfig] = {
 
 
 # ---------------------------------------------------------------------------
+# Circle (Time Timer) style definitions
+# ---------------------------------------------------------------------------
+
+@dataclass
+class CircleTimerConfig:
+    """Visual configuration for a circle/pie countdown style (Time Timer)."""
+    name: str
+    description: str
+    width: int
+    height: int
+    bg_color: str | tuple
+    text_color: str | tuple
+    font_size: int
+    wedge_color: str | tuple          # the pie wedge fill color
+    wedge_alpha: int                   # wedge opacity (0-255)
+    ring_color: str | tuple            # outer ring/border color
+    ring_width: int                    # outer ring thickness
+    tick_color: str | tuple            # tick mark color
+    tick_major_len: int                # length of hour tick marks
+    tick_minor_len: int                # length of minute tick marks
+    show_ticks: bool                   # show tick marks around circle
+    show_hour_numbers: bool            # show 0-24 numbers around circle
+    hour_number_color: str | tuple
+    center_dot: bool                   # dot at center
+    center_dot_color: str | tuple
+    glow: bool
+    gradient_bg: bool
+    gradient_colors: tuple | None
+
+
+CIRCLE_STYLES: dict[str, CircleTimerConfig] = {
+    "circle-modern": CircleTimerConfig(
+        name="circle-modern",
+        description="Modern dark circle timer with cyan wedge",
+        width=1080, height=1080,
+        bg_color="#0a0a0a",
+        text_color="#00e5ff",
+        font_size=90,
+        wedge_color="#00e5ff",
+        wedge_alpha=180,
+        ring_color="#00e5ff",
+        ring_width=6,
+        tick_color="#00e5ff",
+        tick_major_len=25,
+        tick_minor_len=12,
+        show_ticks=True,
+        show_hour_numbers=False,
+        hour_number_color="#555",
+        center_dot=True,
+        center_dot_color="#00e5ff",
+        glow=False,
+        gradient_bg=False,
+        gradient_colors=None,
+    ),
+    "circle-classic": CircleTimerConfig(
+        name="circle-classic",
+        description="Classic Time Timer style with red wedge on white",
+        width=1080, height=1080,
+        bg_color="#ffffff",
+        text_color="#333333",
+        font_size=80,
+        wedge_color="#e53935",
+        wedge_alpha=200,
+        ring_color="#333333",
+        ring_width=5,
+        tick_color="#333333",
+        tick_major_len=30,
+        tick_minor_len=15,
+        show_ticks=True,
+        show_hour_numbers=True,
+        hour_number_color="#666666",
+        center_dot=True,
+        center_dot_color="#333333",
+        glow=False,
+        gradient_bg=False,
+        gradient_colors=None,
+    ),
+    "circle-neon": CircleTimerConfig(
+        name="circle-neon",
+        description="Neon glowing circle timer on dark purple",
+        width=1080, height=1080,
+        bg_color="#0d0221",
+        text_color="#ff2afc",
+        font_size=90,
+        wedge_color="#ff2afc",
+        wedge_alpha=150,
+        ring_color="#ff2afc",
+        ring_width=4,
+        tick_color="#ff2afc",
+        tick_major_len=20,
+        tick_minor_len=10,
+        show_ticks=True,
+        show_hour_numbers=False,
+        hour_number_color="#555",
+        center_dot=False,
+        center_dot_color="#000",
+        glow=True,
+        gradient_bg=False,
+        gradient_colors=None,
+    ),
+    "circle-minimal": CircleTimerConfig(
+        name="circle-minimal",
+        description="Minimal circle timer with thin ring on white",
+        width=1080, height=1080,
+        bg_color="#ffffff",
+        text_color="#333333",
+        font_size=80,
+        wedge_color="#90caf9",
+        wedge_alpha=140,
+        ring_color="#cccccc",
+        ring_width=2,
+        tick_color="#cccccc",
+        tick_major_len=15,
+        tick_minor_len=0,
+        show_ticks=True,
+        show_hour_numbers=False,
+        hour_number_color="#aaa",
+        center_dot=False,
+        center_dot_color="#000",
+        glow=False,
+        gradient_bg=False,
+        gradient_colors=None,
+    ),
+    "circle-retro": CircleTimerConfig(
+        name="circle-retro",
+        description="Retro amber circle timer with LED look",
+        width=1080, height=1080,
+        bg_color="#1a1000",
+        text_color="#ff8c00",
+        font_size=90,
+        wedge_color="#ff8c00",
+        wedge_alpha=160,
+        ring_color="#ff8c00",
+        ring_width=5,
+        tick_color="#ff8c00",
+        tick_major_len=25,
+        tick_minor_len=12,
+        show_ticks=True,
+        show_hour_numbers=False,
+        hour_number_color="#555",
+        center_dot=True,
+        center_dot_color="#ff8c00",
+        glow=True,
+        gradient_bg=False,
+        gradient_colors=None,
+    ),
+    "circle-gradient": CircleTimerConfig(
+        name="circle-gradient",
+        description="Circle timer on vibrant purple gradient",
+        width=1080, height=1080,
+        bg_color="#000000",
+        text_color="#ffffff",
+        font_size=80,
+        wedge_color="#ffffff",
+        wedge_alpha=120,
+        ring_color="#ffffff",
+        ring_width=4,
+        tick_color="#ffffffcc",
+        tick_major_len=20,
+        tick_minor_len=10,
+        show_ticks=True,
+        show_hour_numbers=False,
+        hour_number_color="#ddd",
+        center_dot=True,
+        center_dot_color="#ffffff",
+        glow=False,
+        gradient_bg=True,
+        gradient_colors=("#667eea", "#764ba2"),
+    ),
+    "circle-terminal": CircleTimerConfig(
+        name="circle-terminal",
+        description="Terminal green circle timer on black",
+        width=1080, height=1080,
+        bg_color="#0c0c0c",
+        text_color="#00ff41",
+        font_size=80,
+        wedge_color="#00ff41",
+        wedge_alpha=130,
+        ring_color="#00ff41",
+        ring_width=3,
+        tick_color="#00ff41",
+        tick_major_len=20,
+        tick_minor_len=10,
+        show_ticks=True,
+        show_hour_numbers=False,
+        hour_number_color="#006b1a",
+        center_dot=False,
+        center_dot_color="#000",
+        glow=True,
+        gradient_bg=False,
+        gradient_colors=None,
+    ),
+    "circle-cinematic": CircleTimerConfig(
+        name="circle-cinematic",
+        description="Cinematic gold circle timer on dark gradient",
+        width=1080, height=1080,
+        bg_color="#000000",
+        text_color="#d4af37",
+        font_size=90,
+        wedge_color="#d4af37",
+        wedge_alpha=160,
+        ring_color="#d4af37",
+        ring_width=5,
+        tick_color="#d4af37",
+        tick_major_len=25,
+        tick_minor_len=12,
+        show_ticks=True,
+        show_hour_numbers=True,
+        hour_number_color="#8a7a2a",
+        center_dot=True,
+        center_dot_color="#d4af37",
+        glow=True,
+        gradient_bg=True,
+        gradient_colors=("#1a1a1a", "#000000"),
+    ),
+    "circle-sport": CircleTimerConfig(
+        name="circle-sport",
+        description="Sporty red circle timer with bold digits",
+        width=1080, height=1080,
+        bg_color="#111111",
+        text_color="#ff1744",
+        font_size=100,
+        wedge_color="#ff1744",
+        wedge_alpha=180,
+        ring_color="#ff1744",
+        ring_width=6,
+        tick_color="#ff1744",
+        tick_major_len=30,
+        tick_minor_len=15,
+        show_ticks=True,
+        show_hour_numbers=False,
+        hour_number_color="#666",
+        center_dot=True,
+        center_dot_color="#ff1744",
+        glow=False,
+        gradient_bg=False,
+        gradient_colors=None,
+    ),
+    "circle-elegant": CircleTimerConfig(
+        name="circle-elegant",
+        description="Elegant cream circle timer with brown wedge",
+        width=1080, height=1080,
+        bg_color="#f5f0e8",
+        text_color="#3e2723",
+        font_size=80,
+        wedge_color="#8d6e63",
+        wedge_alpha=150,
+        ring_color="#3e2723",
+        ring_width=3,
+        tick_color="#8d6e63",
+        tick_major_len=25,
+        tick_minor_len=12,
+        show_ticks=True,
+        show_hour_numbers=True,
+        hour_number_color="#8d6e63",
+        center_dot=True,
+        center_dot_color="#3e2723",
+        glow=False,
+        gradient_bg=False,
+        gradient_colors=None,
+    ),
+}
+
+
+# ---------------------------------------------------------------------------
 # Rendering helpers
 # ---------------------------------------------------------------------------
 
-def get_font(style: StyleConfig) -> ImageFont.FreeTypeFont:
-    """Get a monospace-friendly font at the style's size."""
-    # Try common monospace fonts available on macOS / Linux / Windows
+def get_font_at_size(size: int) -> ImageFont.FreeTypeFont:
+    """Get a monospace-friendly font at a given size."""
     font_candidates = [
         # macOS
         "/System/Library/Fonts/SFMono-Bold.otf",
@@ -285,19 +549,18 @@ def get_font(style: StyleConfig) -> ImageFont.FreeTypeFont:
     for path in font_candidates:
         if os.path.exists(path):
             try:
-                return ImageFont.truetype(path, style.font_size)
+                return ImageFont.truetype(path, size)
             except Exception:
                 continue
 
-    # Fallback to default
     try:
-        return ImageFont.truetype("DejaVuSansMono-Bold", style.font_size)
+        return ImageFont.truetype("DejaVuSansMono-Bold", size)
     except Exception:
         return ImageFont.load_default()
 
 
-def get_label_font(style: StyleConfig) -> ImageFont.FreeTypeFont:
-    """Get a smaller font for labels."""
+def get_label_font_at_size(size: int) -> ImageFont.FreeTypeFont:
+    """Get a sans-serif font for labels at a given size."""
     font_candidates = [
         "/System/Library/Fonts/SFMono-Regular.otf",
         "/System/Library/Fonts/Helvetica.ttc",
@@ -305,19 +568,28 @@ def get_label_font(style: StyleConfig) -> ImageFont.FreeTypeFont:
         "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
         "C:/Windows/Fonts/arial.ttf",
     ]
-    label_size = style.font_size // 6
 
     for path in font_candidates:
         if os.path.exists(path):
             try:
-                return ImageFont.truetype(path, label_size)
+                return ImageFont.truetype(path, size)
             except Exception:
                 continue
 
     try:
-        return ImageFont.truetype("DejaVuSans", label_size)
+        return ImageFont.truetype("DejaVuSans", size)
     except Exception:
         return ImageFont.load_default()
+
+
+def get_font(style: StyleConfig) -> ImageFont.FreeTypeFont:
+    """Get a monospace-friendly font at the style's size."""
+    return get_font_at_size(style.font_size)
+
+
+def get_label_font(style: StyleConfig) -> ImageFont.FreeTypeFont:
+    """Get a smaller font for labels."""
+    return get_label_font_at_size(style.font_size // 6)
 
 
 def hex_to_rgb(color) -> tuple:
@@ -489,8 +761,117 @@ def render_frame(style: StyleConfig, total_seconds: int, total_duration: int) ->
 
 
 # ---------------------------------------------------------------------------
+# Circle (Time Timer) frame renderer
+# ---------------------------------------------------------------------------
+
+def render_circle_frame(style: CircleTimerConfig, total_seconds: int, total_duration: int) -> Image.Image:
+    """Render a single circle/pie countdown frame (Time Timer style)."""
+    w, h = style.width, style.height
+    hh, mm, ss = format_time(total_seconds)
+    remaining_ratio = total_seconds / total_duration if total_duration > 0 else 0.0
+    time_text = f"{hh}:{mm}:{ss}"
+
+    # Create base image
+    img = Image.new("RGBA", (w, h), hex_to_rgb(style.bg_color) + (255,))
+    draw = ImageDraw.Draw(img)
+
+    # Gradient background
+    if style.gradient_bg and style.gradient_colors:
+        draw_gradient(draw, w, h, style.gradient_colors[0], style.gradient_colors[1])
+
+    cx, cy = w // 2, h // 2
+    margin = 80
+    radius = min(w, h) // 2 - margin
+
+    wedge_rgb = hex_to_rgb(style.wedge_color)
+    ring_rgb = hex_to_rgb(style.ring_color)
+    tick_rgb = hex_to_rgb(style.tick_color)
+
+    # --- Draw the pie wedge on a separate layer for alpha ---
+    if remaining_ratio > 0:
+        wedge_layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        wedge_draw = ImageDraw.Draw(wedge_layer)
+
+        # Pie wedge: starts at 12 o'clock (-90°), sweeps clockwise
+        sweep_angle = remaining_ratio * 360
+        start_angle = -90
+        end_angle = start_angle + sweep_angle
+
+        wedge_bbox = (cx - radius, cy - radius, cx + radius, cy + radius)
+        wedge_draw.pieslice(
+            wedge_bbox,
+            start=start_angle,
+            end=end_angle,
+            fill=(*wedge_rgb, style.wedge_alpha),
+        )
+
+        img = Image.alpha_composite(img, wedge_layer)
+        draw = ImageDraw.Draw(img)
+
+    # --- Outer ring ---
+    ring_bbox = (cx - radius, cy - radius, cx + radius, cy + radius)
+    draw.ellipse(ring_bbox, outline=ring_rgb, width=style.ring_width)
+
+    # --- Tick marks ---
+    if style.show_ticks:
+        for i in range(60):
+            angle_rad = math.radians(i * 6 - 90)  # 6° per minute, start at top
+            is_major = (i % 5 == 0)  # every 5 minutes = major tick
+            tick_len = style.tick_major_len if is_major else style.tick_minor_len
+            if tick_len <= 0:
+                continue
+            tick_width = 3 if is_major else 1
+
+            outer_x = cx + (radius - style.ring_width) * math.cos(angle_rad)
+            outer_y = cy + (radius - style.ring_width) * math.sin(angle_rad)
+            inner_x = cx + (radius - style.ring_width - tick_len) * math.cos(angle_rad)
+            inner_y = cy + (radius - style.ring_width - tick_len) * math.sin(angle_rad)
+
+            draw.line(
+                [(inner_x, inner_y), (outer_x, outer_y)],
+                fill=tick_rgb,
+                width=tick_width,
+            )
+
+    # --- Hour numbers around the circle ---
+    if style.show_hour_numbers:
+        num_font = get_label_font_at_size(style.font_size // 3)
+        num_rgb = hex_to_rgb(style.hour_number_color)
+        # Show 12 labels: 0, 2, 4, ..., 22 (for 24h) mapped to clock positions
+        for i in range(12):
+            hour_val = i * 2
+            angle_rad = math.radians(i * 30 - 90)  # 30° per step
+            num_r = radius - style.ring_width - max(style.tick_major_len, style.tick_minor_len) - 30
+            nx = cx + num_r * math.cos(angle_rad)
+            ny = cy + num_r * math.sin(angle_rad)
+            draw.text((nx, ny), str(hour_val), font=num_font, fill=num_rgb, anchor="mm")
+
+    # --- Center dot ---
+    if style.center_dot:
+        dot_r = 8
+        dot_rgb = hex_to_rgb(style.center_dot_color)
+        draw.ellipse(
+            (cx - dot_r, cy - dot_r, cx + dot_r, cy + dot_r),
+            fill=dot_rgb,
+        )
+
+    # --- Digital time text in center ---
+    font = get_font_at_size(style.font_size)
+
+    if style.glow:
+        draw_glow(draw, time_text, cx, cy, font, style.text_color, layers=3)
+
+    draw.text((cx, cy), time_text, font=font, fill=hex_to_rgb(style.text_color), anchor="mm")
+
+    return img.convert("RGB")
+
+
+# ---------------------------------------------------------------------------
 # Main generation logic
 # ---------------------------------------------------------------------------
+
+ALL_STYLES = {**STYLES, **CIRCLE_STYLES}
+
 
 def generate_frames(
     style_name: str,
@@ -508,12 +889,13 @@ def generate_frames(
         duration: Total countdown duration in seconds (default 24h = 86400).
         start_seconds: Starting time in seconds (default 24:00:00 = 86400).
     """
-    if style_name not in STYLES:
+    if style_name not in ALL_STYLES:
         print(f"Unknown style: {style_name}")
-        print(f"Available: {', '.join(STYLES.keys())}")
+        print(f"Available: {', '.join(ALL_STYLES.keys())}")
         sys.exit(1)
 
-    style = STYLES[style_name]
+    style = ALL_STYLES[style_name]
+    is_circle = isinstance(style, CircleTimerConfig)
     frame_dir = os.path.join(output_dir, style_name)
     os.makedirs(frame_dir, exist_ok=True)
 
@@ -534,7 +916,10 @@ def generate_frames(
             # Only render unique time displays (1 per second for the timer)
             # But we still write fps copies so the video runs at correct speed
             if sub_frame == 0:
-                img = render_frame(style, second, start_seconds)
+                if is_circle:
+                    img = render_circle_frame(style, second, start_seconds)
+                else:
+                    img = render_frame(style, second, start_seconds)
 
             frame_path = os.path.join(frame_dir, f"frame_{frame_num:08d}.png")
             img.save(frame_path, "PNG", optimize=True)
@@ -559,15 +944,19 @@ def generate_frames(
 
 def preview_style(style_name: str, output_dir: str = "output"):
     """Generate a single preview frame for a style."""
-    if style_name not in STYLES:
+    if style_name not in ALL_STYLES:
         print(f"Unknown style: {style_name}")
         return
 
-    style = STYLES[style_name]
+    style = ALL_STYLES[style_name]
     os.makedirs(output_dir, exist_ok=True)
 
     # Preview at 12:34:56 (representative time)
-    img = render_frame(style, 12 * 3600 + 34 * 60 + 56, 86400)
+    preview_seconds = 12 * 3600 + 34 * 60 + 56
+    if isinstance(style, CircleTimerConfig):
+        img = render_circle_frame(style, preview_seconds, 86400)
+    else:
+        img = render_frame(style, preview_seconds, 86400)
     path = os.path.join(output_dir, f"preview_{style_name}.png")
     img.save(path, "PNG")
     print(f"Preview saved: {path}")
@@ -601,7 +990,7 @@ Assemble into video:
     )
     parser.add_argument(
         "--style",
-        choices=list(STYLES.keys()) + ["all"],
+        choices=list(ALL_STYLES.keys()) + ["all"],
         default="modern",
         help="Visual style for the countdown (default: modern)",
     )
@@ -648,28 +1037,28 @@ Assemble into video:
     if args.list_styles:
         print("Available countdown styles:")
         print("-" * 60)
-        for name, style in STYLES.items():
+        for name, style in ALL_STYLES.items():
             print(f"  {name:12s} - {style.description}")
-        print(f"\nTotal: {len(STYLES)} styles")
+        print(f"\nTotal: {len(ALL_STYLES)} styles")
         return
 
     if args.preview_all:
         print("Generating preview frames for all styles...")
-        for name in STYLES:
+        for name in ALL_STYLES:
             preview_style(name, args.output)
         print(f"\nAll previews saved to {args.output}/")
         return
 
     if args.preview:
         if args.style == "all":
-            for name in STYLES:
+            for name in ALL_STYLES:
                 preview_style(name, args.output)
         else:
             preview_style(args.style, args.output)
         return
 
     if args.style == "all":
-        for name in STYLES:
+        for name in ALL_STYLES:
             generate_frames(name, args.output, args.fps, args.duration, args.start)
     else:
         generate_frames(args.style, args.output, args.fps, args.duration, args.start)

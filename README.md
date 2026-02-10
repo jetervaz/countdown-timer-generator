@@ -1,8 +1,8 @@
 # Countdown Timer Video Frame Generator
 
-Generate countdown timer video frames (24:00:00 → 00:00:00) in **10 different visual styles**. Frames are saved as PNG images and can be assembled into video using ffmpeg.
+Generate countdown timer video frames (24:00:00 → 00:00:00) in **20 different visual styles** — 10 digital and 10 circle (Time Timer style). Frames are saved as PNG images and can be assembled into video using ffmpeg.
 
-## Styles
+## Digital Styles
 
 ### Modern
 Clean dark background with cyan text and progress bar
@@ -44,6 +44,50 @@ Bold red digits with progress bar
 Cream background with brown text and circle progress
 ![Elegant](previews/preview_elegant.png)
 
+## Circle Styles (Time Timer)
+
+Visual pie/wedge countdown timers inspired by the [Time Timer](https://www.timetimer.com/). The colored wedge represents remaining time and shrinks as the countdown progresses.
+
+### Circle Modern
+Modern dark circle timer with cyan wedge
+![Circle Modern](previews/preview_circle-modern.png)
+
+### Circle Classic
+Classic Time Timer style with red wedge on white
+![Circle Classic](previews/preview_circle-classic.png)
+
+### Circle Neon
+Neon glowing circle timer on dark purple
+![Circle Neon](previews/preview_circle-neon.png)
+
+### Circle Minimal
+Minimal circle timer with thin ring on white
+![Circle Minimal](previews/preview_circle-minimal.png)
+
+### Circle Retro
+Retro amber circle timer with LED look
+![Circle Retro](previews/preview_circle-retro.png)
+
+### Circle Gradient
+Circle timer on vibrant purple gradient
+![Circle Gradient](previews/preview_circle-gradient.png)
+
+### Circle Terminal
+Terminal green circle timer on black
+![Circle Terminal](previews/preview_circle-terminal.png)
+
+### Circle Cinematic
+Cinematic gold circle timer on dark gradient
+![Circle Cinematic](previews/preview_circle-cinematic.png)
+
+### Circle Sport
+Sporty red circle timer with bold digits
+![Circle Sport](previews/preview_circle-sport.png)
+
+### Circle Elegant
+Elegant cream circle timer with brown wedge
+![Circle Elegant](previews/preview_circle-elegant.png)
+
 ## Installation
 
 ```bash
@@ -61,6 +105,9 @@ python generate_countdown.py --preview-all
 
 # Generate a 10-second clip at 30fps
 python generate_countdown.py --style modern --fps 30 --duration 10
+
+# Generate circle timer countdown
+python generate_countdown.py --style circle-classic --fps 30 --duration 60
 
 # Generate full 24-hour countdown at 1fps (smaller output)
 python generate_countdown.py --style neon --fps 1
